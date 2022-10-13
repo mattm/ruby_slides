@@ -56,7 +56,7 @@ module RubySlides
                                               series: series)
     end
 
-    def save(path)
+    def save(path, widescreen: false)
       Dir.mktmpdir do |dir|
         extract_path = "#{dir}/extract_#{Time.now.strftime("%Y-%m-%d-%H%M%S")}"
 
@@ -72,11 +72,16 @@ module RubySlides
         render_view('content_type.xml.erb',
                     "#{extract_path}/[Content_Types].xml")
         render_view('presentation.xml.rel.erb',
-                    "#{extract_path}/ppt/_rels/presentation.xml.rels")
+                    "#{extract_path}/ppt/_rels/presentation.xml.rels", widescreen: widescreen)
         render_view('presentation.xml.erb',
-                    "#{extract_path}/ppt/presentation.xml")
+                    "#{extract_path}/ppt/presentation.xml", widescreen: widescreen)
         render_view('app.xml.erb',
                     "#{extract_path}/docProps/app.xml")
+
+        # We dynamically generate the slide master because we need to adjust the
+        # width of the title depending on whether the slide is widescreen or standard
+        render_view('slideMaster1.xml.erb',
+          "#{extract_path}/ppt/slideMasters/slideMaster1.xml", widescreen: widescreen)
 
         # Save slides
         slides.each_with_index do |slide, index|

@@ -8,7 +8,11 @@
   <p:sldId id="<%= 255 + (index+1) %>" r:id="rId<%= (index + 1) + 5 %>"/>
   <% end %>
   </p:sldIdLst>
-  <p:sldSz cx="9144000" cy="6858000" type="screen4x3"/>
+  <% if widescreen %>
+    <p:sldSz cx="12192000" cy="6858000"/>
+  <% else %>
+    <p:sldSz cx="9144000" cy="6858000" type="screen4x3"/>
+  <% end %>
   <p:notesSz cx="6858000" cy="9144000"/>
   <p:defaultTextStyle>
     <a:defPPr>
